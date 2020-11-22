@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:o_color_picker/o_color_picker.dart';
+import 'package:wave_slider/wave_slider.dart';
 
 import 'package:artisto/painter.dart';
 
@@ -11,6 +12,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Offset> _offsets = [];
   Color _brushColor = Colors.black;
+  double _penWidth = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +62,9 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(20),
                       child: CustomPaint(
                         painter: Paintbrush(
-                            points: _offsets, brushColor: _brushColor),
+                            points: _offsets,
+                            brushColor: _brushColor,
+                            penWidth: _penWidth),
                       ),
                     ),
                   ),
@@ -79,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                   height: device.height * 0.08,
                   width: device.width * 0.9,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       IconButton(
                           icon: Icon(
@@ -107,6 +111,18 @@ class _HomePageState extends State<HomePage> {
                               ),
                             );
                           }),
+                      Container(
+                        width: device.width * 0.5,
+                        height: 100,
+                        child: WaveSlider(
+                            displayTrackball: true,
+                            sliderHeight: 50,
+                            onChanged: (changeVal) {
+                              setState(() {
+                                _penWidth = changeVal * 7;
+                              });
+                            }),
+                      ),
                       IconButton(
                           icon: Icon(Icons.layers),
                           onPressed: () {

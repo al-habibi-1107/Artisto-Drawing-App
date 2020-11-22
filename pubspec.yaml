@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   o_color_picker: ^0.1.0
+  wave_slider: ^0.2.0
 
 
   # The following adds the Cupertino Icons font to your application.
