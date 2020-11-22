@@ -8,6 +8,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Offset> _offsets = [];
+  bool erase = false;
   @override
   Widget build(BuildContext context) {
     final device = MediaQuery.of(context).size;
@@ -30,7 +31,7 @@ class _HomePageState extends State<HomePage> {
           ),
           Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
@@ -49,14 +50,43 @@ class _HomePageState extends State<HomePage> {
                     },
                     onPanEnd: (location) {
                       setState(() {
-                        // _offsets.add(null);
+                        _offsets.add(null);
                       });
                     },
-                    child: CustomPaint(
-                      painter: Paintbrush(_offsets),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: CustomPaint(
+                        painter: Paintbrush(points: _offsets),
+                      ),
                     ),
                   ),
-                )
+                ),
+                SizedBox(
+                  height: device.height * 0.04,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black,
+                      ),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(45)),
+                  height: device.height * 0.08,
+                  width: device.width * 0.9,
+                  child: Row(
+                    children: [
+                      IconButton(icon: Icon(Icons.palette), onPressed: null),
+                      IconButton(
+                          icon: Icon(Icons.layers),
+                          onPressed: () {
+                            setState(() {
+                              _offsets = [];
+                            });
+                          })
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
