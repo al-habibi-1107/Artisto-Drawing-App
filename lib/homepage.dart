@@ -1,5 +1,7 @@
-import 'package:artisto/painter.dart';
 import 'package:flutter/material.dart';
+import 'package:o_color_picker/o_color_picker.dart';
+
+import 'package:artisto/painter.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -8,7 +10,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Offset> _offsets = [];
-  bool erase = false;
+  Color _brushColor = Colors.black;
+
   @override
   Widget build(BuildContext context) {
     final device = MediaQuery.of(context).size;
@@ -56,7 +59,8 @@ class _HomePageState extends State<HomePage> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: CustomPaint(
-                        painter: Paintbrush(points: _offsets),
+                        painter: Paintbrush(
+                            points: _offsets, brushColor: _brushColor),
                       ),
                     ),
                   ),
@@ -75,8 +79,34 @@ class _HomePageState extends State<HomePage> {
                   height: device.height * 0.08,
                   width: device.width * 0.9,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      IconButton(icon: Icon(Icons.palette), onPressed: null),
+                      IconButton(
+                          icon: Icon(
+                            Icons.palette,
+                            color: _brushColor,
+                          ),
+                          onPressed: () {
+                            showDialog<void>(
+                              context: context,
+                              child: AlertDialog(
+                                backgroundColor: Colors.white70,
+                                content: Container(
+                                  height: 220,
+                                  child: OColorPicker(
+                                    selectedColor: _brushColor,
+                                    colors: primaryColorsPalette,
+                                    onColorChange: (color) {
+                                      setState(() {
+                                        _brushColor = color;
+                                      });
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
                       IconButton(
                           icon: Icon(Icons.layers),
                           onPressed: () {

@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 
 class Paintbrush extends CustomPainter {
   List<Offset> points;
+  Color brushColor;
 
-  Paintbrush({this.points});
+  Paintbrush({this.points, this.brushColor});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -15,7 +16,7 @@ class Paintbrush extends CustomPainter {
 
     final painter = Paint()
       ..strokeWidth = 4
-      ..color = Colors.black;
+      ..color = brushColor;
 
     for (var x = 0; x < points.length - 1; x++) {
       if (points[x] != null && points[x + 1] != null) {
