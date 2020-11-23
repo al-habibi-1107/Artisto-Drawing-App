@@ -8,3 +8,6 @@ on the screen with a choice of multiple colors and pen modifications.
 - Ocolor_picker
 
 ### Example from the app:
+(my apologies for the drawing)
+
+![alt text](/images/img.png)
