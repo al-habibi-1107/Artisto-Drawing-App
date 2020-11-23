@@ -1,13 +1,14 @@
 import 'dart:ui';
 
+import 'package:artisto/group_points.dart';
 import 'package:flutter/material.dart';
 
 class Paintbrush extends CustomPainter {
-  List<Offset> points;
+  List<GroupPoints> newPoints;
   Color brushColor;
   double penWidth;
 
-  Paintbrush({this.points, this.brushColor, this.penWidth});
+  Paintbrush({this.brushColor, this.penWidth, this.newPoints});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -15,16 +16,18 @@ class Paintbrush extends CustomPainter {
     final background = Paint()..color = Colors.white;
     canvas.drawRect(rect, background);
 
-    final painter = Paint()
-      ..strokeWidth = penWidth
-      ..color = brushColor;
+    final painter = Paint()..strokeCap = StrokeCap.round;
 
-    for (var x = 0; x < points.length - 1; x++) {
-      if (points[x] != null && points[x + 1] != null) {
+    for (var x = 0; x < newPoints.length - 1; x++) {
+      painter..color = newPoints[x].color;
+      painter..strokeWidth = newPoints[x].strokeWidth;
+
+      if (newPoints[x].offset != null && newPoints[x + 1].offset != null) {
         // print(points[x]);
-        canvas.drawLine(points[x], points[x + 1], painter);
-      } else if (points[x] != null && points[x + 1] == null) {
-        canvas.drawPoints(PointMode.points, [points[x]], painter);
+        canvas.drawLine(newPoints[x].offset, newPoints[x + 1].offset, painter);
+      } else if (newPoints[x].offset != null &&
+          newPoints[x + 1].offset == null) {
+        canvas.drawPoints(PointMode.points, [newPoints[x].offset], painter);
       }
     }
   }

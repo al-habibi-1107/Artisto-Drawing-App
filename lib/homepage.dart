@@ -1,3 +1,4 @@
+import 'package:artisto/group_points.dart';
 import 'package:flutter/material.dart';
 import 'package:o_color_picker/o_color_picker.dart';
 import 'package:wave_slider/wave_slider.dart';
@@ -10,7 +11,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Offset> _offsets = [];
+  List<GroupPoints> points = [];
+
   Color _brushColor = Colors.black;
   double _penWidth = 3;
 
@@ -45,26 +47,50 @@ class _HomePageState extends State<HomePage> {
                   child: GestureDetector(
                     onPanDown: (location) {
                       setState(() {
-                        _offsets.add(location.localPosition);
+                        points = List.from(points)
+                          ..add(
+                            GroupPoints(
+                                color: _brushColor,
+                                offset: location.localPosition,
+                                strokeWidth: _penWidth),
+                          );
+
+                        // _offsets.add(location.localPosition);
                       });
                     },
                     onPanUpdate: (location) {
                       setState(() {
-                        _offsets.add(location.localPosition);
+                        points = List.from(points)
+                          ..add(
+                            GroupPoints(
+                                color: _brushColor,
+                                offset: location.localPosition,
+                                strokeWidth: _penWidth),
+                          );
+
+                        // _offsets.add(location.localPosition);
                       });
                     },
                     onPanEnd: (location) {
                       setState(() {
-                        _offsets.add(null);
+                        points = List.from(points)
+                          ..add(
+                            GroupPoints(
+                                color: _brushColor,
+                                offset: null,
+                                strokeWidth: _penWidth),
+                          );
+                        // _offsets.add(null);
                       });
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: CustomPaint(
                         painter: Paintbrush(
-                            points: _offsets,
-                            brushColor: _brushColor,
-                            penWidth: _penWidth),
+                          brushColor: _brushColor,
+                          penWidth: _penWidth,
+                          newPoints: points,
+                        ),
                       ),
                     ),
                   ),
@@ -127,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                           icon: Icon(Icons.layers),
                           onPressed: () {
                             setState(() {
-                              _offsets = [];
+                              points = [];
                             });
                           })
                     ],
