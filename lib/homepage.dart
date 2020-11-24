@@ -16,6 +16,8 @@ class _HomePageState extends State<HomePage> {
   Color _brushColor = Colors.black;
   double _penWidth = 3;
 
+  bool isEnable = false;
+
   @override
   Widget build(BuildContext context) {
     final device = MediaQuery.of(context).size;
@@ -43,7 +45,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Container(
                   width: device.width * 0.9,
-                  height: device.height * 0.7,
+                  height: device.height * 0.8,
                   child: GestureDetector(
                     onPanDown: (location) {
                       setState(() {
@@ -54,8 +56,6 @@ class _HomePageState extends State<HomePage> {
                                 offset: location.localPosition,
                                 strokeWidth: _penWidth),
                           );
-
-                        // _offsets.add(location.localPosition);
                       });
                     },
                     onPanUpdate: (location) {
@@ -67,8 +67,6 @@ class _HomePageState extends State<HomePage> {
                                 offset: location.localPosition,
                                 strokeWidth: _penWidth),
                           );
-
-                        // _offsets.add(location.localPosition);
                       });
                     },
                     onPanEnd: (location) {
@@ -80,7 +78,6 @@ class _HomePageState extends State<HomePage> {
                                 offset: null,
                                 strokeWidth: _penWidth),
                           );
-                        // _offsets.add(null);
                       });
                     },
                     child: ClipRRect(
@@ -95,71 +92,141 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: device.height * 0.04,
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black,
+              ],
+            ),
+          ),
+          //PALLETE BUTTON
+          AnimatedPositioned(
+            bottom: 20,
+            right: isEnable ? 80 : 20,
+            child: FloatingActionButton(
+              backgroundColor: Colors.white,
+              child: Icon(
+                Icons.palette,
+                color: Colors.black,
+              ),
+              mini: true,
+              key: ValueKey('paintcolor'),
+              onPressed: () {
+                showDialog<void>(
+                  context: context,
+                  child: AlertDialog(
+                    backgroundColor: Colors.white70,
+                    content: Container(
+                      height: 220,
+                      child: OColorPicker(
+                        selectedColor: _brushColor,
+                        colors: primaryColorsPalette,
+                        onColorChange: (color) {
+                          setState(() {
+                            _brushColor = color;
+                          });
+                          Navigator.of(context).pop();
+                        },
                       ),
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(45)),
-                  height: device.height * 0.08,
-                  width: device.width * 0.9,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      IconButton(
-                          icon: Icon(
-                            Icons.palette,
-                            color: _brushColor,
-                          ),
-                          onPressed: () {
-                            showDialog<void>(
-                              context: context,
-                              child: AlertDialog(
-                                backgroundColor: Colors.white70,
-                                content: Container(
-                                  height: 220,
-                                  child: OColorPicker(
-                                    selectedColor: _brushColor,
-                                    colors: primaryColorsPalette,
-                                    onColorChange: (color) {
-                                      setState(() {
-                                        _brushColor = color;
-                                      });
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ),
-                              ),
-                            );
-                          }),
-                      Container(
+                    ),
+                  ),
+                );
+              },
+            ),
+            duration: Duration(milliseconds: 300),
+          ),
+          // SIZE BUTTON
+          AnimatedPositioned(
+            bottom: 20,
+            right: isEnable ? 130 : 20,
+            child: FloatingActionButton(
+              backgroundColor: Colors.white,
+              child: Icon(
+                Icons.circle,
+                color: Colors.black,
+              ),
+              mini: true,
+              key: ValueKey('paintcolor'),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    child: AlertDialog(
+                      content: Container(
                         width: device.width * 0.5,
                         height: 100,
                         child: WaveSlider(
                             displayTrackball: true,
-                            sliderHeight: 50,
                             onChanged: (changeVal) {
                               setState(() {
-                                _penWidth = changeVal * 7;
+                                _penWidth = changeVal * 5;
                               });
                             }),
                       ),
-                      IconButton(
-                          icon: Icon(Icons.layers),
-                          onPressed: () {
-                            setState(() {
-                              points = [];
-                            });
-                          })
+                    ));
+              },
+            ),
+            duration: Duration(milliseconds: 300),
+          ),
+          // CLEAR BUTTON
+          AnimatedPositioned(
+            bottom: 20,
+            right: isEnable ? 180 : 20,
+            child: FloatingActionButton(
+              backgroundColor: Colors.white,
+              child: Icon(
+                Icons.layers,
+                color: Colors.black,
+              ),
+              mini: true,
+              key: ValueKey('paintcolor'),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  child: AlertDialog(
+                    content: Text("Clear your canvas?"),
+                    actions: [
+                      FlatButton(
+                        onPressed: () {
+                          setState(() {
+                            points = [];
+                          });
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          "Yes",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text("No"),
+                      ),
                     ],
                   ),
-                ),
-              ],
+                );
+              },
+            ),
+            duration: Duration(milliseconds: 300),
+          ),
+          //Paint Button
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: FloatingActionButton(
+              key: ValueKey('paintbutton'),
+              backgroundColor: Colors.white,
+              onPressed: () {
+                setState(() {
+                  isEnable = !isEnable;
+                });
+              },
+              child: isEnable
+                  ? Icon(
+                      Icons.close,
+                      color: Colors.black,
+                    )
+                  : Icon(
+                      Icons.format_paint,
+                      color: Colors.black,
+                    ),
             ),
           ),
         ],
