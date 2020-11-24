@@ -32,8 +32,10 @@ class _HomePageState extends State<HomePage> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color.fromRGBO(52, 148, 230, 1),
-                  Color.fromRGBO(236, 110, 173, 1)
+                  // Color.fromRGBO(1, 1, 1, 1),
+                  // Color.fromRGBO(235, 87, 87, 1),
+                  Color.fromRGBO(65, 41, 90, 1),
+                  Color.fromRGBO(47, 7, 67, 1),
                 ],
               ),
             ),
@@ -45,7 +47,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Container(
                   width: device.width * 0.9,
-                  height: device.height * 0.8,
+                  height: device.height * 0.75,
                   child: GestureDetector(
                     onPanDown: (location) {
                       setState(() {
