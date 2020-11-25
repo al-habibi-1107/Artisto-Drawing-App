@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:artisto/group_points.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:o_color_picker/o_color_picker.dart';
 import 'package:wave_slider/wave_slider.dart';
 
@@ -17,6 +20,27 @@ class _HomePageState extends State<HomePage> {
   double _penWidth = 3;
 
   bool isEnable = false;
+
+  File imageGet;
+  bool isLoading = false;
+
+  void _getFromGallery() async {
+    var imageFile = await ImagePicker().getImage(source: ImageSource.gallery);
+    File selected = File(imageFile.path);
+    setState(() {
+      isLoading = true;
+      imageGet = selected;
+    });
+  }
+
+  void _getFromCamera() async {
+    var imageFile = await ImagePicker().getImage(source: ImageSource.camera);
+    File selected = File(imageFile.path);
+    setState(() {
+      isLoading = true;
+      imageGet = selected;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,12 +108,30 @@ class _HomePageState extends State<HomePage> {
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: CustomPaint(
-                        painter: Paintbrush(
-                          brushColor: _brushColor,
-                          penWidth: _penWidth,
-                          newPoints: points,
-                        ),
+                      child: Container(
+                        child: Stack(children: [
+                          !isLoading
+                              ? Image.asset(
+                                  'images/canvas.jpg',
+                                  fit: BoxFit.cover,
+                                  scale: 0.1,
+                                  width: device.width * 0.9,
+                                  height: device.height * 0.75,
+                                )
+                              : Image.file(
+                                  imageGet,
+                                  fit: BoxFit.cover,
+                                  width: device.width * 0.9,
+                                  height: device.height * 0.75,
+                                ),
+                          CustomPaint(
+                            painter: Paintbrush(
+                              brushColor: _brushColor,
+                              penWidth: _penWidth,
+                              newPoints: points,
+                            ),
+                          ),
+                        ]),
                       ),
                     ),
                   ),
@@ -144,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.black,
               ),
               mini: true,
-              key: ValueKey('paintcolor'),
+              key: ValueKey('sizeButton'),
               onPressed: () {
                 showDialog(
                     context: context,
@@ -176,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.black,
               ),
               mini: true,
-              key: ValueKey('paintcolor'),
+              key: ValueKey('clearBUTTON'),
               onPressed: () {
                 showDialog(
                   context: context,
@@ -200,6 +242,45 @@ class _HomePageState extends State<HomePage> {
                           Navigator.of(context).pop();
                         },
                         child: Text("No"),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+            duration: Duration(milliseconds: 300),
+          ),
+          //Get Image button
+          AnimatedPositioned(
+            bottom: 20,
+            right: isEnable ? 230 : 20,
+            child: FloatingActionButton(
+              backgroundColor: Colors.white,
+              child: Icon(
+                Icons.image,
+                color: Colors.black,
+              ),
+              mini: true,
+              key: ValueKey('getImgButton'),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  child: AlertDialog(
+                    content: Text("Get image from?"),
+                    actions: [
+                      FlatButton(
+                        onPressed: () {
+                          _getFromGallery();
+                        },
+                        child: Text(
+                          "Gallery",
+                        ),
+                      ),
+                      FlatButton(
+                        onPressed: () {
+                          _getFromCamera();
+                        },
+                        child: Text("Camera"),
                       ),
                     ],
                   ),

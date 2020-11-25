@@ -12,10 +12,6 @@ class Paintbrush extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final rect = Rect.fromLTWH(0, 0, size.width, size.height);
-    final background = Paint()..color = Colors.white;
-    canvas.drawRect(rect, background);
-
     final painter = Paint()..strokeCap = StrokeCap.round;
 
     for (var x = 0; x < newPoints.length - 1; x++) {
