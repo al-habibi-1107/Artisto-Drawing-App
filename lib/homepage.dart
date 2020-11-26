@@ -58,8 +58,10 @@ class _HomePageState extends State<HomePage> {
                 colors: [
                   // Color.fromRGBO(1, 1, 1, 1),
                   // Color.fromRGBO(235, 87, 87, 1),
-                  Color.fromRGBO(65, 41, 90, 1),
-                  Color.fromRGBO(47, 7, 67, 1),
+                  // Color.fromRGBO(65, 41, 90, 1),
+                  // Color.fromRGBO(47, 7, 67, 1),
+                  Color.fromRGBO(112, 225, 245, 1),
+                  Color.fromRGBO(255, 209, 148, 1)
                 ],
               ),
             ),
@@ -109,20 +111,23 @@ class _HomePageState extends State<HomePage> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Container(
+                        color: Colors.black,
                         child: Stack(children: [
                           !isLoading
                               ? Image.asset(
                                   'images/canvas.jpg',
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.fill,
                                   scale: 0.1,
                                   width: device.width * 0.9,
-                                  height: device.height * 0.75,
+                                  height: device.height * 0.9,
                                 )
-                              : Image.file(
-                                  imageGet,
-                                  fit: BoxFit.cover,
-                                  width: device.width * 0.9,
-                                  height: device.height * 0.75,
+                              : Center(
+                                  child: Image.file(
+                                    imageGet,
+                                    fit: BoxFit.cover,
+                                    // width: device.width * 0.9,
+                                    // height: device.height * 0.75,
+                                  ),
                                 ),
                           CustomPaint(
                             painter: Paintbrush(
@@ -229,6 +234,7 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {
                           setState(() {
                             points = [];
+                            isLoading = false;
                           });
                           Navigator.of(context).pop();
                         },
@@ -271,6 +277,7 @@ class _HomePageState extends State<HomePage> {
                       FlatButton(
                         onPressed: () {
                           _getFromGallery();
+                          Navigator.of(context).pop();
                         },
                         child: Text(
                           "Gallery",
@@ -279,6 +286,7 @@ class _HomePageState extends State<HomePage> {
                       FlatButton(
                         onPressed: () {
                           _getFromCamera();
+                          Navigator.of(context).pop();
                         },
                         child: Text("Camera"),
                       ),
