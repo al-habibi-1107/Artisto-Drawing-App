@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:artisto/group_points.dart';
+import 'package:artisto/helpers/group_points.dart';
 import 'package:flutter/material.dart';
 
 class Paintbrush extends CustomPainter {

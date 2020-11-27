@@ -26,6 +26,8 @@ dependencies:
   o_color_picker: ^0.1.0
   wave_slider: ^0.2.0
   image_picker: any
+  google_fonts: any
+  url_launcher: any
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -63,6 +65,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - images/canvas.jpg
+    - images/kamil.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

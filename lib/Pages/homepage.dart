@@ -1,12 +1,12 @@
 import 'dart:io';
-
-import 'package:artisto/group_points.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:o_color_picker/o_color_picker.dart';
 import 'package:wave_slider/wave_slider.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
-import 'package:artisto/painter.dart';
+import 'about_page.dart';
+import '../helpers/group_points.dart';
+import '../helpers/painter.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -68,12 +68,15 @@ class _HomePageState extends State<HomePage> {
           ),
           Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                SizedBox(
+                  height: 10,
+                ),
                 Container(
                   width: device.width * 0.9,
-                  height: device.height * 0.75,
+                  height: device.height * 0.85,
                   child: GestureDetector(
                     onPanDown: (location) {
                       setState(() {
@@ -149,6 +152,7 @@ class _HomePageState extends State<HomePage> {
             bottom: 20,
             right: isEnable ? 80 : 20,
             child: FloatingActionButton(
+              heroTag: "btn-pallete",
               backgroundColor: Colors.white,
               child: Icon(
                 Icons.palette,
@@ -185,6 +189,7 @@ class _HomePageState extends State<HomePage> {
             bottom: 20,
             right: isEnable ? 130 : 20,
             child: FloatingActionButton(
+              heroTag: "btn-size",
               backgroundColor: Colors.white,
               child: Icon(
                 Icons.circle,
@@ -217,6 +222,7 @@ class _HomePageState extends State<HomePage> {
             bottom: 20,
             right: isEnable ? 180 : 20,
             child: FloatingActionButton(
+              heroTag: "btn-clear",
               backgroundColor: Colors.white,
               child: Icon(
                 Icons.layers,
@@ -261,6 +267,7 @@ class _HomePageState extends State<HomePage> {
             bottom: 20,
             right: isEnable ? 230 : 20,
             child: FloatingActionButton(
+              heroTag: "btn-getImg",
               backgroundColor: Colors.white,
               child: Icon(
                 Icons.image,
@@ -297,11 +304,34 @@ class _HomePageState extends State<HomePage> {
             ),
             duration: Duration(milliseconds: 300),
           ),
+          // ABOUT PAGE
+          AnimatedPositioned(
+            bottom: 20,
+            right: isEnable ? 280 : 20,
+            child: FloatingActionButton(
+              heroTag: "btn-about",
+              key: ValueKey('info'),
+              mini: true,
+              child: Icon(
+                Icons.info,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                setState(() {
+                  isEnable = false;
+                });
+                Navigator.of(context).pushNamed(AboutPage.routeName);
+              },
+              backgroundColor: Colors.white,
+            ),
+            duration: Duration(milliseconds: 300),
+          ),
           //Paint Button
           Positioned(
             bottom: 20,
             right: 20,
             child: FloatingActionButton(
+              heroTag: "btn-paint",
               key: ValueKey('paintbutton'),
               backgroundColor: Colors.white,
               onPressed: () {
